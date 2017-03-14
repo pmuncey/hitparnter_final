@@ -1,0 +1,106 @@
+<div class="page-header">
+  <h3>Match #<%= @match.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Player</dt>
+      <dd>
+        <% if @match.player.present? %>
+          <a href="/users/<%= @match.player_id %>">
+            <%= @match.player.email %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>Hitpartner</dt>
+      <dd>
+        <% if @match.hitpartner.present? %>
+          <a href="/users/<%= @match.hitpartner_id %>">
+            <%= @match.hitpartner.email %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>Court</dt>
+      <dd>
+        <% if @match.court.present? %>
+          <a href="/courts/<%= @match.court_id %>">
+            <%= @match.court.location %>
+          </a>
+        <% end %>
+      </dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/matches" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/matches/<%= @match.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_match/<%= @match.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- A Match has many messages -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Messages
+      </li>
+
+      <% @match.messages.each do |message| %>
+        <li class="list-group-item">
+          <a href="/messages/<%= message.id %>">
+            <%= message.body %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/messages/<%= message.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/messages/<%= message.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_message/<%= message.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_message" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for body -->
+      <div class="form-group">
+        <label for="body" class="control-label">
+          Body
+        </label>
+
+        <input type="text" id="body" name="body" placeholder="Body" class="form-control" value="">
+      </div>
+
+      <!-- Label and input for match_id -->
+      <input type="hidden" name="match_id" value="<%= @match.id %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <button class="btn btn-block btn-success">
+        Create Message
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>

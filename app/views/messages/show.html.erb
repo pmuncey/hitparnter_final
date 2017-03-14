@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h3>Message #<%= @message.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Body</dt>
+      <dd><%= @message.body %></dd>
+
+      <dt>Match</dt>
+      <dd>
+        <% if @message.match.present? %>
+          <a href="/matches/<%= @message.match_id %>">
+            <%= @message.match.player_id %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>User</dt>
+      <dd>
+        <% if @message.user.present? %>
+          <a href="/users/<%= @message.user_id %>">
+            <%= @message.user.email %>
+          </a>
+        <% end %>
+      </dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/messages" class="btn btn-primary">
+        Back
+      </a>
+      <% if current_user == @message.user %>
+        <a href="/messages/<%= @message.id %>/edit" class="btn btn-warning">
+          Edit
+        </a>
+        <a href="/delete_message/<%= @message.id %>" class="btn btn-danger" rel="nofollow">
+          Delete
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="page-header">
+  <h3>Court #<%= @court.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Location</dt>
+      <dd><%= @court.location %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/courts" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/courts/<%= @court.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_court/<%= @court.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- A Court has many matches -->
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Matches
+      </li>
+
+      <% @court.matches.each do |match| %>
+        <li class="list-group-item">
+          <a href="/matches/<%= match.id %>">
+            <%= match.player_id %>
+          </a>
+          <div class="btn-group btn-group-xs pull-right">
+            <a href="/matches/<%= match.id %>" class="btn btn-primary">
+              <i class="fa fa-search-plus"></i>
+            </a>
+            <a href="/matches/<%= match.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="/delete_match/<%= match.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+        </li>
+      <% end %>
+
+      <li class="list-group-item">
+        <form action="/create_match" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for player_id -->
+      <div class="form-group">
+        <label for="player_id" class="control-label">
+          Player
+        </label>
+
+        <%= select_tag(:player_id, options_from_collection_for_select(User.all, :id, :email), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for hitpartner_id -->
+      <div class="form-group">
+        <label for="hitpartner_id" class="control-label">
+          Hitpartner
+        </label>
+
+        <%= select_tag(:hitpartner_id, options_from_collection_for_select(User.all, :id, :email), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for court_id -->
+      <input type="hidden" name="court_id" value="<%= @court.id %>">
+
+      <button class="btn btn-block btn-success">
+        Create Match
+      </button>
+    </form>
+      </li>
+    </ul>
+  </div>
+</div>

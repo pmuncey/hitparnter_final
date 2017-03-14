@@ -1,0 +1,55 @@
+<!-- Validation failure messages -->
+<% if @match.errors.any? %>
+  <% @match.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Match #<%= @match.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_match/<%= @match.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for player_id -->
+      <div class="form-group">
+        <label for="player_id" class="control-label">
+          Player
+        </label>
+
+        <%= select_tag(:player_id, options_from_collection_for_select(User.all, :id, :email, @match.player_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for hitpartner_id -->
+      <div class="form-group">
+        <label for="hitpartner_id" class="control-label">
+          Hitpartner
+        </label>
+
+        <%= select_tag(:hitpartner_id, options_from_collection_for_select(User.all, :id, :email, @match.hitpartner_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for court_id -->
+      <div class="form-group">
+        <label for="court_id" class="control-label">
+          Court
+        </label>
+
+        <%= select_tag(:court_id, options_from_collection_for_select(Court.all, :id, :location, @match.court_id), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-warning">
+        Update Match
+      </button>
+      or
+      <a href="/matches/<%= @match.id %>">Cancel</a>
+    </form>
+  </div>
+</div>
